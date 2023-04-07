@@ -1,0 +1,58 @@
+﻿<Window x:Class="ListClients1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ListClients1"
+        mc:Ignorable="d"
+        Title="ListViewSample" Height="450" Width="800">
+    <Grid>
+        <ListView Margin="100" SelectionChanged="ListView_SelectionChanged" Name="lvDataBinding">
+            <!--<ListViewItem>A list View</ListViewItem>
+            <ListViewItem IsSelected="True">A list View</ListViewItem>
+            <ListViewItem>A list View</ListViewItem>
+            <ListViewItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0 0 10 0">item1</TextBlock>
+                    <TextBlock Margin="0 0 10 0">item2</TextBlock>
+                    <TextBlock Margin="0 0 10 0">item3</TextBlock>
+                </StackPanel>
+            </ListViewItem>-->
+            <ListView.Resources>
+                <Style TargetType="{x:Type GridViewColumnHeader}">
+                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                </Style>
+            </ListView.Resources>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="120" DisplayMemberBinding="{Binding Name}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Tag="Name" >Name</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn  Width="50" DisplayMemberBinding="{Binding Age}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Tag="Age" >Age</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn  Width="150" DisplayMemberBinding="{Binding Mail}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Tag="Mail" >Mail</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn  Width="150" DisplayMemberBinding="{Binding Sex}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Tag="Sex">Sex</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button x:Name="AddItem" Content="AddItem" HorizontalAlignment="Left" Margin="100,75,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button x:Name="BtnSortAsc" Content="BtnSortAsc" HorizontalAlignment="Left" Margin="162,75,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+        <Button x:Name="BtnSortDesc" Content="BtnSortDesc" HorizontalAlignment="Left" Margin="229,75,0,0" VerticalAlignment="Top" Click="BtnSortDesc_Click"/>
+        <CheckBox x:Name="CheckMale" IsChecked="{Binding ShowMale}" Content="Male" HorizontalAlignment="Left" Margin="317,75,0,0" VerticalAlignment="Top" Checked="CheckBox_Checked"/>
+        <CheckBox x:Name="CheckFemale" IsChecked="{Binding ShowFemale}" Content="Female" HorizontalAlignment="Left" Margin="368,75,0,0" VerticalAlignment="Top" Checked="CheckFemale_Checked"/>
+        <Button x:Name="btnClearFilter" Content="ClearFilter" HorizontalAlignment="Left" Margin="440,73,0,0" VerticalAlignment="Top" Click="btnClearFilter_Click"/>
+    </Grid>
+</Window>
