@@ -21,9 +21,6 @@ namespace ListClients1
     /// </summary>
     public partial class MainWindow : Window
     {
-        private GridViewColumnHeader listViewSortCol = null;
-        private bool _showMale = true;
-        private bool _showFemale = true;
 
         List<User> items = new List<User>();
         public MainWindow()
@@ -38,7 +35,6 @@ namespace ListClients1
             lvDataBinding.ItemsSource = items;
 
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lvDataBinding.ItemsSource);
-            //view.Filter = GenderFilter;
 
 
             // Ordenação
@@ -48,35 +44,50 @@ namespace ListClients1
 
         }
 
-
-        public bool ShowMale
-        {
-            get { return _showMale; }
-            set
-            {
-                _showFemale = value;
-                
-            }
-        }
-
-        public bool ShowFemale
-        {
-            get { return _showFemale; }
-            set
-            {
-                _showFemale = value;
-            }
-        }
-
         public void FilterUsers()
         {
-            if(items != null)
+           if(CheckMale.IsChecked == true)
             {
-                var filteredUsers = items.Where(
-                    user => (_showMale && user.Sex == SexType.Male) || (_showFemale && user.Sex == SexType.Female)).ToList();
-                lvDataBinding.ItemsSource = filteredUsers;
-                CollectionViewSource.GetDefaultView(lvDataBinding.ItemsSource).Refresh();
+                List<User> results = items.FindAll(FindMales);
+                if(results.Count != 0)
+                {
+                    lvDataBinding.ItemsSource = results;
+                }
+                
+            } else
+            {
+                if(CheckFemale.IsChecked==true)
+                {
+                    List<User> results = items.FindAll(FindFemales);
+                    if(results.Count != 0)
+                    {
+                        lvDataBinding.ItemsSource = results;
+                    }
+                }
+            }
+           
+        }
 
+         private static bool FindMales(User user)
+        {
+            if (user.Sex.Equals(SexType.Male))
+            {
+                return
+                    true;
+            } else
+            {
+                return false;
+            }
+        }
+
+        private static bool FindFemales(User user)
+        {
+            if (user.Sex.Equals(SexType.Female))
+            {
+                return true;
+            } else
+            {
+                return false;
             }
         }
         
@@ -122,6 +133,7 @@ namespace ListClients1
                 CheckFemale.IsChecked = !CheckFemale.IsChecked;
             }
             CollectionViewSource.GetDefaultView(lvDataBinding.ItemsSource).Refresh();
+            
 
         }
 

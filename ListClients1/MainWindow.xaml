@@ -51,8 +51,8 @@
         <Button x:Name="AddItem" Content="AddItem" HorizontalAlignment="Left" Margin="100,75,0,0" VerticalAlignment="Top" Click="Button_Click"/>
         <Button x:Name="BtnSortAsc" Content="BtnSortAsc" HorizontalAlignment="Left" Margin="162,75,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
         <Button x:Name="BtnSortDesc" Content="BtnSortDesc" HorizontalAlignment="Left" Margin="229,75,0,0" VerticalAlignment="Top" Click="BtnSortDesc_Click"/>
-        <CheckBox x:Name="CheckMale" IsChecked="{Binding ShowMale}" Content="Male" HorizontalAlignment="Left" Margin="317,75,0,0" VerticalAlignment="Top" Checked="CheckBox_Checked"/>
-        <CheckBox x:Name="CheckFemale" IsChecked="{Binding ShowFemale}" Content="Female" HorizontalAlignment="Left" Margin="368,75,0,0" VerticalAlignment="Top" Checked="CheckFemale_Checked"/>
+        <CheckBox x:Name="CheckMale" Tag="Male" IsChecked="{Binding ShowMale}" Content="Male" HorizontalAlignment="Left" Margin="317,75,0,0" VerticalAlignment="Top" Checked="CheckBox_Checked"/>
+        <CheckBox x:Name="CheckFemale" Tag="Female" IsChecked="{Binding ShowFemale}" Content="Female" HorizontalAlignment="Left" Margin="368,75,0,0" VerticalAlignment="Top" Checked="CheckFemale_Checked"/>
         <Button x:Name="btnClearFilter" Content="ClearFilter" HorizontalAlignment="Left" Margin="440,73,0,0" VerticalAlignment="Top" Click="btnClearFilter_Click"/>
     </Grid>
 </Window>
