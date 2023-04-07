@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,83 +17,76 @@ using System.Windows.Shapes;
 
 namespace ListClients1
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-
         List<User> items = new List<User>();
         public MainWindow()
         {
             InitializeComponent();
 
-            items.Add(new User() { Name = "joao", Age = 12, Mail="joao@email.com", Sex=SexType.Male });
-            items.Add(new User() { Name = "maria", Age = 13 , Mail="maria@email.com", Sex=SexType.Female});
-            items.Add(new User() { Name = "jose", Age = 12 , Mail="jose@email.com", Sex=SexType.Male});
-            items.Add(new User() { Name = "Gabriel", Age = 24 , Mail="jose@email.com", Sex = SexType.Male });
-            items.Add(new User() { Name = "Daniela", Age = 10 , Mail="jose@email.com", Sex = SexType.Female});
+            items.Add(new User() { Age = 12, Sex = "M" });
+            items.Add(new User() { Age = 13, Sex = "F" });
+            items.Add(new User() { Age = 12, Sex = "M" });
+            items.Add(new User() { Age = 24, Sex = "M" });
+            items.Add(new User() { Age = 10, Sex = "F" });
             lvDataBinding.ItemsSource = items;
 
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lvDataBinding.ItemsSource);
-
-
-            // Ordenação
-            //CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lvDataBinding.ItemsSource);
-            //view.SortDescriptions.Add(new SortDescription("Age", ListSortDirection.Ascending));
-            //view.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
-
         }
 
         public void FilterUsers()
         {
-           if(CheckMale.IsChecked == true)
+            if (CheckMale.IsChecked == true)
             {
                 List<User> results = items.FindAll(FindMales);
-                if(results.Count != 0)
+                if (results.Count != 0)
                 {
                     lvDataBinding.ItemsSource = results;
                 }
-                
-            } else
+            }
+
+            if (CheckFemale.IsChecked == true)
             {
-                if(CheckFemale.IsChecked==true)
+                List<User> results = items.FindAll(FindFemales);
+                if (results.Count != 0)
                 {
-                    List<User> results = items.FindAll(FindFemales);
-                    if(results.Count != 0)
-                    {
-                        lvDataBinding.ItemsSource = results;
-                    }
+                    lvDataBinding.ItemsSource = results;
                 }
             }
-           
+
+
+            if (CheckMale.IsChecked == true && CheckFemale.IsChecked == true)
+            {
+                lvDataBinding.ItemsSource = items;
+            }
+            if (CheckMale.IsChecked == false && CheckFemale.IsChecked == false)
+            {
+                lvDataBinding.ItemsSource = items;
+            }
+            CollectionViewSource.GetDefaultView(lvDataBinding.ItemsSource).Refresh();
+
+
         }
 
-         private static bool FindMales(User user)
+        private static bool FindMales(User user)
         {
-            if (user.Sex.Equals(SexType.Male))
+            if (user.Sex.Equals("M"))
             {
-                return
-                    true;
-            } else
-            {
-                return false;
+                return true;
             }
+            return false;
+
         }
 
         private static bool FindFemales(User user)
         {
-            if (user.Sex.Equals(SexType.Female))
+            if (user.Sex.Equals("F"))
             {
                 return true;
-            } else
-            {
-                return false;
             }
-        }
-        
+            return false;
 
-       
+        }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -101,81 +95,63 @@ namespace ListClients1
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            String selectedGender = SelectGender.Text;
 
-            items.Add(new User() { Name = "joao", Age = 12, Mail = "joao@email.com", Sex = SexType.Male });
-            // lvDataBinding.Items.Add(new User() { Name = "user", Age = 112, Mail = "user@email.com", sex = SexType.Male });
-            // lvDataBinding.ItemsSource = "";
+            if (InputIdade.Text.Length <= 0)
+            {
+                MessageBox.Show("Digite um valor para a idade");
+                return;
+            }
+
+            int inputIdade = int.Parse(InputIdade.Text);
+            items.Add(new User() { Age = inputIdade, Sex = selectedGender });
             CollectionViewSource.GetDefaultView(lvDataBinding.ItemsSource).Refresh();
-
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lvDataBinding.ItemsSource);
-            view.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
-            CollectionViewSource.GetDefaultView(lvDataBinding.ItemsSource).Refresh();
-
-        }
-
-        private void BtnSortDesc_Click(object sender, RoutedEventArgs e)
-        {
-            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lvDataBinding.ItemsSource);
-            view.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Descending));
-            CollectionViewSource.GetDefaultView(lvDataBinding.ItemsSource).Refresh();
+            return;
 
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             FilterUsers();
-            if (CheckFemale.IsChecked == true)
-            {
-                CheckFemale.IsChecked = !CheckFemale.IsChecked;
-            }
-            CollectionViewSource.GetDefaultView(lvDataBinding.ItemsSource).Refresh();
-            
-
         }
 
         private void CheckFemale_Checked(object sender, RoutedEventArgs e)
         {
             FilterUsers();
-            if (CheckMale.IsChecked == true)
-            {
-                CheckMale.IsChecked = !CheckMale.IsChecked;
-            }
-            CollectionViewSource.GetDefaultView(lvDataBinding.ItemsSource).Refresh();
-
         }
 
         private void btnClearFilter_Click(object sender, RoutedEventArgs e)
         {
             CheckFemale.IsChecked = false;
             CheckMale.IsChecked = false;
-
-            
-        CollectionViewSource.GetDefaultView(lvDataBinding.ItemsSource).Refresh();
+            lvDataBinding.ItemsSource = items;
+            CollectionViewSource.GetDefaultView(lvDataBinding.ItemsSource).Refresh();
         }
 
-    }
+        private void SelectGender_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            String selectedGender = SelectGender.Text;
 
-    public enum SexType { Male, Female}
+        }
+
+        private void InputIdade_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+    }
 
     public class User : INotifyPropertyChanged
     {
-        public string Name { get; set; }
-
         public int Age { get; set; }
 
-        public string Mail { get; set; }
-
-        public SexType Sex { get; set; }
+        public string Sex { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
-
-        public override string ToString()
-        {
-            return this.Name + ", " + this.Age + " years old";
-        }
     }
 }
